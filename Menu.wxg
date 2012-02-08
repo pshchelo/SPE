@@ -204,6 +204,11 @@
                     <handler>menu_uncomment</handler>
                 </item>
                 <item>
+                    <label>&amp;Toggle Comment\tCtrl+Q</label>
+                    <id>TOGGLECOMMENT</id>
+                    <handler>menu_togglecomment</handler>
+                </item>
+                <item>
                     <label>---</label>
                     <id>---</id>
                     <name>---</name>

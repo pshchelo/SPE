@@ -25,6 +25,7 @@ import _spe.plugins.Pycheck as Pycheck
 from sidebar.Browser import Browser 
 
 ####Constants-------------------------------------------------------------------
+COMMENT2ND              = '#' #second character for dedicated comment-out token
 DEFAULT                 = "<default>"
 MAXINT                  = sys.maxint #for ListCtrl (should be long)
 NEWFILE                 = 'unnamed'
@@ -444,7 +445,7 @@ Please try then to change the encoding or save it again."""%(self.encoding,messa
         doc.BeginUndoAction()
         for lineNumber in range(start, end + 1):
             firstChar = doc.PositionFromLine(lineNumber)
-            doc.InsertText(firstChar, '##')
+            doc.InsertText(firstChar, '#'+COMMENT2ND)
         doc.SetCurrentPos(doc.PositionFromLine(start))
         doc.SetAnchor(doc.GetLineEndPosition(end))
         doc.EndUndoAction()
@@ -461,13 +462,40 @@ Please try then to change the encoding or save it again."""%(self.encoding,messa
         for lineNumber in range(start, end + 1):
             firstChar = doc.PositionFromLine(lineNumber)
             if chr(doc.GetCharAt(firstChar)) == '#':
-                if chr(doc.GetCharAt(firstChar + 1)) == '#':
-                    # line starts with ##
+                if chr(doc.GetCharAt(firstChar + 1)) == COMMENT2ND:
+                    # line starts with '#'+COMMENT2ND
                     doc.SetCurrentPos(firstChar + 2)
                 else:
                     # line starts with #
                     doc.SetCurrentPos(firstChar + 1)
                 doc.DelLineLeft()
+        doc.SetSelection(sel[0],doc.PositionFromLine(end+1))
+        doc.SetCurrentPos(doc.PositionFromLine(start))
+        doc.EndUndoAction()
+    
+    def toggle_comment(self):
+        """Toggle comment of lines in section"""
+        doc = self.source
+        sel = doc.GetSelection()
+        start = doc.LineFromPosition(sel[0])
+        end = doc.LineFromPosition(sel[1])
+        if end > start and doc.GetColumn(sel[1]) == 0:
+            end = end - 1
+        doc.BeginUndoAction()
+        for lineNumber in range(start, end + 1):
+            firstChar = doc.PositionFromLine(lineNumber)
+            if chr(doc.GetCharAt(firstChar)) == '#':
+                if chr(doc.GetCharAt(firstChar + 1)) == COMMENT2ND:
+                    # line starts with '#'+COMMENT2ND
+                    doc.SetCurrentPos(firstChar + 2)
+                else:
+                    # line starts with only #
+                    doc.SetCurrentPos(firstChar + 1)
+                doc.DelLineLeft()
+            else:
+                # line does not start with #
+                firstChar = doc.PositionFromLine(lineNumber)
+                doc.InsertText(firstChar, '#'+COMMENT2ND)
         doc.SetSelection(sel[0],doc.PositionFromLine(end+1))
         doc.SetCurrentPos(doc.PositionFromLine(start))
         doc.EndUndoAction()

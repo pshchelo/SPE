@@ -14,7 +14,8 @@ SAVE_COPY, SAVE_UML_AS, PRINT_UML_SETUP, PRINT_UML_PREVIEW, PRINT_UML,
 CUT, COPY, PASTE, REMEMBER_OPEN_FILES,
 
 GO_TO_LINE, BROWSE_SOURCE,
-AUTO_COMPLETE, SHOW_DOCSTRING, INDENT, DEDENT, COMMENT, UNCOMMENT, INSERT_SEPARATOR,
+AUTO_COMPLETE, SHOW_DOCSTRING, INDENT, DEDENT, COMMENT, UNCOMMENT, TOGGLECOMMENT,
+INSERT_SEPARATOR,
 INSERT_SIGNATURE, EXECUTE, PREFERENCES,
 
 WHITESPACE, LINENUMBERS, INDENTATION_GUIDES, RIGHT_EDGE_INDICATOR,
@@ -43,7 +44,7 @@ MANUAL, KEYBOARD_SHORTCUTS, PYTHON_LIBRARY, PYTHON_REFERENCE,
 PYTHON_DOCUMENTATION_SERVER, WXGLADE_MANUAL, WXGLADE_TUTORIAL, WXWINDOWS_DOCUMENTATION,
 DONATE, ABOUT
 ] =\
-[wx.NewId() for x in range(86)]
+[wx.NewId() for x in range(87)]
 
 CHILD_MENUS=[
 wx.ID_SAVE, wx.ID_SAVEAS, SAVE_COPY, wx.ID_CLOSE, REMEMBER_OPEN_FILES,
@@ -51,7 +52,8 @@ SAVE_UML_AS, PRINT_UML_SETUP, PRINT_UML_PREVIEW, PRINT_UML,
 
 wx.ID_UNDO, wx.ID_REDO, CUT, COPY, PASTE, wx.ID_REPLACE,
 wx.ID_FIND, GO_TO_LINE, BROWSE_SOURCE,
-AUTO_COMPLETE, INDENT, DEDENT, COMMENT, UNCOMMENT, INSERT_SEPARATOR,
+AUTO_COMPLETE, INDENT, DEDENT, COMMENT, UNCOMMENT, TOGGLECOMMENT,
+INSERT_SEPARATOR,
 INSERT_SIGNATURE, EXECUTE, 
 
 WHITESPACE, INDENTATION_GUIDES, RIGHT_EDGE_INDICATOR,
@@ -286,6 +288,7 @@ class Bar(wx.MenuBar):
         self.edit.Append(DEDENT, _("&Dedent\tShift+Tab"), "", wx.ITEM_NORMAL)
         self.edit.Append(COMMENT, _("Co&mment\tCtrl+3"), "", wx.ITEM_NORMAL)
         self.edit.Append(UNCOMMENT, _("U&nComment\tCtrl+4"), "", wx.ITEM_NORMAL)
+        self.edit.Append(TOGGLECOMMENT, _("&Toggle Comment\tCtrl+Q"), "", wx.ITEM_NORMAL)
         self.edit.AppendSeparator()
         self.edit.Append(INSERT_SEPARATOR, _("Insert &separator...\tAlt+I"), "", wx.ITEM_NORMAL)
         self.edit.Append(INSERT_SIGNATURE, _("Insert &signature\tCtrl+Shift+I"), "", wx.ITEM_NORMAL)
@@ -412,6 +415,7 @@ class Bar(wx.MenuBar):
         self.Bind(wx.EVT_MENU, self.menu_dedent, id=DEDENT)
         self.Bind(wx.EVT_MENU, self.menu_comment, id=COMMENT)
         self.Bind(wx.EVT_MENU, self.menu_uncomment, id=UNCOMMENT)
+        self.Bind(wx.EVT_MENU, self.menu_togglecomment, id=TOGGLECOMMENT)
         self.Bind(wx.EVT_MENU, self.menu_insert_separator, id=INSERT_SEPARATOR)
         self.Bind(wx.EVT_MENU, self.menu_insert_signature, id=INSERT_SIGNATURE)
         self.Bind(wx.EVT_MENU, self.menu_preferences, id=PREFERENCES)

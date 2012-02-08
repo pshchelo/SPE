@@ -64,7 +64,7 @@ BLENDER_TOOLS = [TOOL_LOAD_IN_BLENDER, TOOL_REFERENCE_IN_BLENDER]
 
 def _(x):
     if '|' in x and info.DARWIN:
-        return x.replace('Ctrl','Cmd').replace('Alt+F4','Cmd+Q')
+        return x.replace('Ctrl+Q','Alt+Q').replace('Ctrl','Cmd').replace('Alt+F4','Cmd+Q')
     else:
         return x
 
@@ -398,6 +398,11 @@ class Bar(wxgMenu.Bar):
         """Edit > UnComment"""
         if self.app.children:
             self.app.childActive.uncomment()
+
+    def menu_togglecomment(self, event=None):
+        """Edit > Toggle Comment"""
+        if self.app.children:
+            self.app.childActive.toggle_comment()
 
     def menu_insert_separator(self, event=None):
         """Edit > Insert seperator..."""
