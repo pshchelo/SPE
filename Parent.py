@@ -174,10 +174,11 @@ class Panel(wx.Notebook):
         #parent frame
         frame   = self.frame
         frame.SetDropTarget(Child.DropOpen(self.openList))
-        icon    = wx.Icon(os.path.join(self.pathImages,'favicon.ico'),wx.BITMAP_TYPE_ICO)
-        frame.SetIcon(icon)
+        icons = wx.IconBundle()
+        icons.AddIconFromFile(os.path.join(self.pathImages,'spe.ico'),wx.BITMAP_TYPE_ICO)
+        frame.SetIcons(icons)
         if hasattr(frame,'panelFrame'):
-            frame.panelFrame.SetIcon(icon)
+            frame.panelFrame.SetIcons(icons) #is this right?
         #constructors
         self.preferencesSave()
         self.__remember__(openFiles=self._openFiles)
